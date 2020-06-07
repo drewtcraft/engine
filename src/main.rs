@@ -1,10 +1,9 @@
-struct Point {
-	x: u16,
-	y: u16,
-}
+mod util;
+
+use util::structs;
 
 fn main() {
-	let x = Point {
+	let x = structs::Point {
 		x: 200,
 		y: 300,
 	};
