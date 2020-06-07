@@ -1,7 +1,7 @@
 # engine
-## a spaceship game engine in rust
+### a spaceship game engine in rust
 
-## game rules
+#### game rules
 - ships are composed of squares (like pixels), making them modular and able to be destroyed piece by piece
 - ship acceleration is determined by weight (# of pixels) and engine capacity (# of engines)
 - ships have velocity and do not slow down 
