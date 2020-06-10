@@ -14,21 +14,23 @@ pub struct Color(u8, u8, u8);
 
 pub struct Pixel {
 	pub point: Point,
-	pub color: Color,
+	pub color: Option<Color>,
 }
 
-let FRAME_SIZE = 20;
-
 pub struct Visible {
-	pub body: [ [ Pixel; FRAME_SIZE ]; FRAME_SIZE ], 
+	pub body: [ [ Pixel; 20 ]; 20 ], 
 }
 
 pub struct Mass {
-	pub body: Vec<(Point, Color)>,
+	pub body: [ [ Pixel; 20 ]; 20 ], 
 	pub perimeter: Vec<Point>,
 }
 
 impl Mass {
 	fn calculate_perimeter(&self) {
+		// so I think if we have a point to start with
+
+		// we look in a clockwise direction at our neighbors
+		// when we find a blank
 	}
 }
