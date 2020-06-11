@@ -21,13 +21,13 @@ pub struct Visible {
 	pub body: [ [ Pixel; 20 ]; 20 ], 
 }
 
+pub struct Coord(u8, u8);
+
 pub struct Mass {
 	pub body: [ [ Pixel; 20 ]; 20 ], 
-	pub perimeter: Vec<Point>,
-	perimeter_reference_point: Point,
+	pub perimeter: Vec<Coord>,
+	perimeter_reference_point: Coord,
 }
-
-pub struct Coord(u8, u8);
 
 // direction enum, letters represent cardinal directions
 pub enum Dir {
@@ -41,7 +41,8 @@ pub enum Dir {
 	SE,
 }
 
-fn get_neighbor (direction: Dir, coord: Coord) -> Coord {
+// just tells us how to move, given the direction
+fn get_2d_neighbor (direction: Dir, coord: Coord) -> Coord {
 	match direction {
 		Dir::E => Coord(coord.0 - 1, coord.1),
 		Dir::NE => Coord(coord.0 - 1, coord.1 + 1),
@@ -54,15 +55,14 @@ fn get_neighbor (direction: Dir, coord: Coord) -> Coord {
 	}
 }
 
-fn trace_perimeter (body: [[Pixel;20];20], point: Coord, last_coord: Coord) {
-	
+fn trace_2d_perimeter (body: [[Pixel;20];20], point: Coord, last_coord: Option<Coord>) -> Vec<Coord> {
+	vec![]
 }
 
 impl Mass {
-	fn calculate_perimeter(&self) {
-		// so I think if we have a point to start with
-
-		// we look in a clockwise direction at our neighbors
-		// when we find a blank
+	fn calculate_perimeter(mut self) {
+		self.perimeter = {
+			trace_2d_perimeter(self.body, self.perimeter_reference_point, None)
+		}
 	}
 }
