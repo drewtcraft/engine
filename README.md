@@ -5,6 +5,8 @@
 - API should have three main components: 1. configure front-end (set view size) 2. stage game changes, 3. commit game changes and return a new game state
 - engine should be front-end agnostic
 - game state should return all necessary information to paint the screen
+- ^ should only return a diff of which pixels have changed from the previous game state
+- ^ should also handle all view movement
 
 #### game rules
 - ships are composed of squares (like pixels), making them modular and able to be destroyed piece by piece
