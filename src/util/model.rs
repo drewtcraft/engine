@@ -55,7 +55,30 @@ fn get_2d_neighbor (direction: Dir, coord: Coord) -> Coord {
 	}
 }
 
-fn trace_2d_perimeter (body: [[Pixel;20];20], point: Coord, last_coord: Option<Coord>) -> Vec<Coord> {
+fn get_next_direction (direction: Dir) -> Dir {
+	match direction {
+		Dir::E => Dir::NE,
+		Dir::NE => Dir::N,
+		Dir::N => Dir::NW,
+		Dir::NW => Dir::W,
+		Dir::W => Dir::SW,
+		Dir::SW => Dir::S,
+		Dir::S => Dir::SE,
+		Dir::SE => Dir::E,
+	}
+}
+
+fn trace_2d_perimeter (body: [[Pixel;20];20], coord: Coord, last_dir: Option<Dir>) -> Vec<Coord> {
+	let direction: Dir = match last_dir {
+		Some(d) => get_next_direction(d),
+		None => Dir::E
+	};
+
+	let mut next_coord: Option<Coord> = None;
+	while let None = next_coord {
+		// do something
+	}
+
 	vec![]
 }
 
