@@ -1,14 +1,9 @@
-pub struct Point {
-	pub x: u16,
-	pub y: u16,
-}
-
-pub struct Color(u8, u8, u8);
-
-pub struct Coord(usize, usize);
-
-// direction enum, letters represent cardinal directions
-pub enum Dir { E, NE, N, NW, W, SW, S, SE }
+// this require syntax sux
+// keep an eye out for something better
+use crate::util::model::atomic::Coord;
+use crate::util::model::atomic::Dir;
+use crate::util::model::atomic::Color;
+use crate::util::model::atomic::Point;
 
 pub struct Mass {
 	pub body: [ [ Option<Color>; 20 ]; 20 ], 
