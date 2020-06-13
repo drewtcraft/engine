@@ -9,3 +9,8 @@ pub struct Coord(pub usize, pub usize);
 
 // direction enum, letters represent cardinal directions
 pub enum Dir { E, NE, N, NW, W, SW, S, SE }
+
+pub struct Momentum {
+	angle: i16,
+	speed: u8,
+}

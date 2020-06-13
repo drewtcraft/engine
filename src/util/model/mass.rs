@@ -4,12 +4,14 @@ use crate::util::model::atomic::Coord;
 use crate::util::model::atomic::Dir;
 use crate::util::model::atomic::Color;
 use crate::util::model::atomic::Point;
+use crate::util::model::atomic::Momentum;
 
 pub struct Mass {
 	pub body: [ [ Option<Color>; 20 ]; 20 ], 
 	pub perimeter: Vec<Coord>,
 	pub anchor: Point,
 	pub perimeter_reference_point: Coord,
+	pub momentum: Momentum,
 }
 
 fn inc_dimension (dimension: usize, delta: i16) -> Option<usize> {
