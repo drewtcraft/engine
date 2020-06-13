@@ -17,7 +17,7 @@ pub struct Mass {
 	pub perimeter_reference_point: Coord,
 }
 
-fn change_dimension (dimension: usize, delta: i16) -> Option<usize> {
+fn inc_dimension (dimension: usize, delta: i16) -> Option<usize> {
 	match delta {
 		1 => {
 			if dimension == 20 { 
@@ -49,36 +49,8 @@ fn get_2d_neighbor (coord: &Coord, direction: &Dir) -> Option<Coord> {
 	};
 
 	// should definitely abstract this bit into a function
-	let x: Option<usize> = match diff.0 {
-		1 => {
-			if coord.0 == 20 { 
-				Some(coord.0 + 1) 
-			} else { None }
-		},
-		0 => Some(coord.0),
-		-1 => {
-			if coord.0 == 0 { 
-				Some(coord.0 - 1)
-			} else { None }
-		},
-		_ => None
-	};
-
-	let y: Option<usize> = match diff.1 {
-		1 => {
-			if coord.1 == 20 { 
-				Some(coord.1 + 1) 
-			} else { None }
-		},
-		0 => Some(coord.1),
-		-1 => {
-			if coord.1 == 0 { 
-				Some(coord.1 - 1) 
-			} else { None }
-		},
-		_ => None
-	};
-
+	let x: Option<usize> = inc_dimension(coord.0, diff.0);
+	let y: Option<usize> = inc_dimension(coord.1, diff.1); 
 	match x {
 		Some(x) => {
 			match y {
