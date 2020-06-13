@@ -3,34 +3,36 @@ pub struct Point {
 	pub y: u16,
 }
 
-pub struct Rect {
-	pub top_left: Point,
-	pub top_right: Point,
-	pub bottom_right: Point,
-	pub bottom_left: Point,
-}
-
 pub struct Color(u8, u8, u8);
 
-pub struct Pixel {
-	pub point: Point,
-	pub color: Option<Color>,
-}
-
-pub struct Visible {
-	pub body: [ [ Option<Color>; 20 ]; 20 ], 
-}
-
 pub struct Coord(usize, usize);
+
+// direction enum, letters represent cardinal directions
+pub enum Dir { E, NE, N, NW, W, SW, S, SE }
 
 pub struct Mass {
 	pub body: [ [ Option<Color>; 20 ]; 20 ], 
 	pub perimeter: Vec<Coord>,
-	perimeter_reference_point: Coord,
+	pub anchor: Point,
+	pub perimeter_reference_point: Coord,
 }
 
-// direction enum, letters represent cardinal directions
-pub enum Dir { E, NE, N, NW, W, SW, S, SE }
+fn change_dimension (dimension: usize, delta: i16) -> Option<usize> {
+	match delta {
+		1 => {
+			if dimension == 20 { 
+				Some(dimension + 1) 
+			} else { None }
+		},
+		0 => Some(dimension),
+		-1 => {
+			if dimension == 0 { 
+				Some(dimension - 1)
+			} else { None }
+		},
+		_ => None
+	}
+}
 
 // translates a direction + starting position into a new coord
 // or if we are out of bounds, None
