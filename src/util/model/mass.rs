@@ -12,6 +12,7 @@ pub struct Mass {
 	pub anchor: Point,
 	pub perimeter_reference_point: Coord,
 	pub momentum: Momentum,
+	pub center: Coord,
 }
 
 fn inc_dimension (dimension: usize, delta: i16) -> Option<usize> {
