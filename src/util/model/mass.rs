@@ -1,11 +1,11 @@
 use std::convert::TryFrom;
-// this require syntax sux
-// keep an eye out for something better
-use crate::util::model::atomic::Coord;
-use crate::util::model::atomic::Dir;
-use crate::util::model::atomic::Color;
-use crate::util::model::atomic::Point;
-use crate::util::model::atomic::Momentum;
+use crate::util::model::atomic::{
+	Coord, 
+	Dir,
+	Point,
+	Color,
+	Momentum,
+};
 use crate::util::constant::SHIP_SIZE;
 
 type Body = [ [ Option<Color>; SHIP_SIZE ]; SHIP_SIZE];
@@ -111,7 +111,11 @@ fn coords_are_equal (a: Option<Coord>, b: &Coord) -> bool {
 	}
 }
 
-fn trace_2d_perimeter (body: &Body, coord: &Coord, mut v: Vec<Coord>, last_dir: Option<Dir>) -> Vec<Coord> {
+fn trace_2d_perimeter (	body: &Body, 
+						coord: &Coord, 
+						mut v: Vec<Coord>, 
+						last_dir: Option<Dir>) -> Vec<Coord> {
+
 	// get next direction from last direction;
 	// use East by default (for now)
 	let direction: Dir = match last_dir {
