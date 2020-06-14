@@ -5,7 +5,6 @@ use crate::util::model::atomic::Coord;
 use crate::util::model::atomic::Dir;
 use std::f64::consts::PI;
 
-
 pub enum Weapon {
 	Missile,
 	Laser,

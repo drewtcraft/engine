@@ -11,6 +11,6 @@ pub struct Coord(pub usize, pub usize);
 pub enum Dir { E, NE, N, NW, W, SW, S, SE }
 
 pub struct Momentum {
-	angle: i16,
-	speed: u8,
+	pub angle: Dir,
+	pub speed: u8,
 }

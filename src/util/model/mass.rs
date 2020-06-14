@@ -1,3 +1,4 @@
+use std::convert::TryFrom;
 // this require syntax sux
 // keep an eye out for something better
 use crate::util::model::atomic::Coord;
@@ -5,20 +6,44 @@ use crate::util::model::atomic::Dir;
 use crate::util::model::atomic::Color;
 use crate::util::model::atomic::Point;
 use crate::util::model::atomic::Momentum;
+use crate::util::constant::SHIP_SIZE;
+
+type Body = [ [ Option<Color>; SHIP_SIZE ]; SHIP_SIZE];
 
 pub struct Mass {
-	pub body: [ [ Option<Color>; 20 ]; 20 ], 
-	pub perimeter: Vec<Coord>,
+	pub body: Body, 
 	pub anchor: Point,
+	pub perimeter: Vec<Coord>,
 	pub perimeter_reference_point: Coord,
 	pub momentum: Momentum,
 	pub center: Coord,
 }
 
+fn get_diff_from_direction (direction: &Dir) -> (i16, i16) {
+	match direction {
+		Dir::E => 	(-1, 0),
+		Dir::NE => 	(-1, 1),
+		Dir::N => 	(0, 1),
+		Dir::NW => 	(1, 1),
+		Dir::W => 	(1, 0),
+		Dir::SW => 	(1, -1),
+		Dir::S => 	(0, -1),
+		Dir::SE => 	(-1, -1),
+	}
+}
+
+impl Mass {
+	fn reposition (self) {
+		let diff = get_diff_from_direction(&self.momentum.angle);
+		let x = u16::try_from(diff.0).unwrap();
+	}
+}
+
+
 fn inc_dimension (dimension: usize, delta: i16) -> Option<usize> {
 	match delta {
 		1 => {
-			if dimension == 20 { 
+			if dimension == SHIP_SIZE { 
 				Some(dimension + 1) 
 			} else { None }
 		},
@@ -32,19 +57,12 @@ fn inc_dimension (dimension: usize, delta: i16) -> Option<usize> {
 	}
 }
 
+
+
 // translates a direction + starting position into a new coord
 // or if we are out of bounds, None
 fn get_2d_neighbor (coord: &Coord, direction: &Dir) -> Option<Coord> {
-	let diff: (i16, i16) = match direction {
-		Dir::E => 	(-1, 0),
-		Dir::NE => 	(-1, 1),
-		Dir::N => 	(0, 1),
-		Dir::NW => 	(1, 1),
-		Dir::W => 	(1, 0),
-		Dir::SW => 	(1, -1),
-		Dir::S => 	(0, -1),
-		Dir::SE => 	(-1, -1),
-	};
+	let diff: (i16, i16) = get_diff_from_direction(direction);
 
 	// should definitely abstract this bit into a function
 	let x: Option<usize> = inc_dimension(coord.0, diff.0);
@@ -93,7 +111,7 @@ fn coords_are_equal (a: Option<Coord>, b: &Coord) -> bool {
 	}
 }
 
-fn trace_2d_perimeter (body: &[[Option<Color>;20];20], coord: &Coord, mut v: Vec<Coord>, last_dir: Option<Dir>) -> Vec<Coord> {
+fn trace_2d_perimeter (body: &Body, coord: &Coord, mut v: Vec<Coord>, last_dir: Option<Dir>) -> Vec<Coord> {
 	// get next direction from last direction;
 	// use East by default (for now)
 	let direction: Dir = match last_dir {
