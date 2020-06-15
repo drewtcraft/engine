@@ -4,9 +4,9 @@ use crate::util::model::atomic::{
 	Dir,
 	Point,
 	Color,
-	Momentum,
 };
 use crate::util::constant::SHIP_SIZE;
+use crate::util::model::vector::Vector;
 
 type Body = [ [ Option<Color>; SHIP_SIZE ]; SHIP_SIZE];
 
@@ -15,8 +15,8 @@ pub struct Mass {
 	pub anchor: Point,
 	pub perimeter: Vec<Coord>,
 	pub perimeter_reference_point: Coord,
-	pub momentum: Momentum,
 	pub center: Coord,
+	pub vector: Vector,
 }
 
 fn get_diff_from_direction (direction: &Dir) -> (i16, i16) {
@@ -32,10 +32,31 @@ fn get_diff_from_direction (direction: &Dir) -> (i16, i16) {
 	}
 }
 
+fn get_mass (body: &Body) -> f64 {
+	let mut count: f64 = 0.0;
+	for a in body.iter() {
+		for b in a.iter() {
+			match b {
+				Some(_) => count += 1.0,
+				None => {},
+			};
+		}
+	}
+	count
+}
+
 impl Mass {
+	fn collide (mut self, obj: &Mass) {
+		let mass1 = get_mass(&self.body);
+		let mass2 = get_mass(&obj.body);
+		let vector1 = &self.vector;
+		let vector2 = &obj.vector;
+		let x = (mass1 * vector1.x) + (mass2 * vector2.x) / mass1 + mass2;
+		let y = (mass1 * vector1.y) + (mass2 * vector2.y) / mass1 + mass2;
+		self.vector = Vector { x, y };
+	}
+
 	fn reposition (self) {
-		let diff = get_diff_from_direction(&self.momentum.angle);
-		let x = u16::try_from(diff.0).unwrap();
 	}
 }
 
