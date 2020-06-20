@@ -3,6 +3,7 @@ pub struct Point {
 	pub y: u16,
 }
 
+#[derive(Copy, Clone)]
 pub struct Color(u8, u8, u8);
 
 pub struct Coord(pub usize, pub usize);

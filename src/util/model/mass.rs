@@ -8,7 +8,7 @@ use crate::util::model::atomic::{
 use crate::util::constant::SHIP_SIZE;
 use crate::util::model::vector::Vector;
 
-type Body = [ [ Option<Color>; SHIP_SIZE ]; SHIP_SIZE];
+type Body = [ [ Option<Color>; SHIP_SIZE ]; SHIP_SIZE ];
 
 pub struct Mass {
 	pub body: Body, 
@@ -91,7 +91,7 @@ impl Mass {
 			Coord(x.ceil() as usize, y.ceil() as usize)
 		}
 
-		let mut new_body: Body;
+		let mut new_body: Body = [ [ None; SHIP_SIZE ] ; SHIP_SIZE ];
 
 		for (x, a) in self.body.iter().enumerate() {
 			for (y, color) in a.iter().enumerate() {
