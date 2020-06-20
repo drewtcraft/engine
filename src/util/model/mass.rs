@@ -17,6 +17,7 @@ pub struct Mass {
 	pub perimeter_reference_point: Coord,
 	pub center: Coord,
 	pub vector: Vector,
+	pub orientation: Dir,
 }
 
 fn get_diff_from_direction (direction: &Dir) -> (i16, i16) {
@@ -54,6 +55,52 @@ impl Mass {
 		let x = (mass1 * vector1.x) + (mass2 * vector2.x) / mass1 + mass2;
 		let y = (mass1 * vector1.y) + (mass2 * vector2.y) / mass1 + mass2;
 		self.vector = Vector { x, y };
+	}
+
+	// TODO make this more precise, get max X and Y, use their centers
+	fn get_center (&self) -> Coord {
+			Coord(SHIP_SIZE / 2, SHIP_SIZE / 2)
+	}
+
+	fn rotate (mut self, direction: Dir) {
+		// first calculate the angle
+		let mut angle: f64 = 15.0;
+		let mut dir: Dir = get_next_direction(&self.orientation);
+		loop {
+			match &dir {
+				direction => break,
+				_ => {
+					angle += 15.0;
+					dir = get_next_direction(&dir);
+				},
+			}
+		}
+
+		let sin_of_angle = &angle.sin();
+		let cos_of_angle = &angle.cos();
+
+		fn rotate_coord (coord: &Coord, sin: &f64, cos: &f64) -> Coord {
+			// convert coord to f64
+			let fx: f64 = coord.0 as f64;
+			let fy: f64 = coord.1 as f64;
+
+			// get new coordinate
+			let x = fx * cos - fy * sin;
+			let y = fy * cos + fx * sin;
+
+			Coord(x.ceil() as usize, y.ceil() as usize)
+		}
+
+		let mut new_body: Body;
+
+		for (x, a) in self.body.iter().enumerate() {
+			for (y, color) in a.iter().enumerate() {
+				let new_coord = rotate_coord(&Coord(x, y), sin_of_angle, cos_of_angle);
+				new_body[new_coord.0][new_coord.1];
+			}
+		}
+
+
 	}
 
 	fn reposition (self) {
