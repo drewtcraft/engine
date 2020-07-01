@@ -1,5 +1,6 @@
 // so for a vector, we can just store a single coordinate and compare it to
 // (0, 0) to get the angle and length (force)
+#[derive(Copy, Clone)]
 pub struct Vector {
 	pub x: f64,
 	pub y: f64,

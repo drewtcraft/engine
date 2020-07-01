@@ -1,14 +1,6 @@
-use std::convert::TryFrom;
-use crate::util::model::atomic::{
-	Coord, 
-	Dir,
-	Point,
-	Color,
-};
-use crate::util::constant::SHIP_SIZE;
-use crate::util::model::vector::Vector;
+use crate::atomic::{ Coord, Dir, Color, Point };
 
-type Body = [ [ Option<Color>; SHIP_SIZE ]; SHIP_SIZE ];
+type Body = Vec<Vec<Option<Color>>>;
 
 pub struct Mass {
 	pub body: Body, 
@@ -16,7 +8,6 @@ pub struct Mass {
 	pub perimeter: Vec<Coord>,
 	pub perimeter_reference_point: Coord,
 	pub center: Coord,
-	pub vector: Vector,
 	pub orientation: Dir,
 }
 
@@ -47,19 +38,10 @@ fn get_mass (body: &Body) -> f64 {
 }
 
 impl Mass {
-	fn collide (mut self, obj: &Mass) {
-		let mass1 = get_mass(&self.body);
-		let mass2 = get_mass(&obj.body);
-		let vector1 = &self.vector;
-		let vector2 = &obj.vector;
-		let x = (mass1 * vector1.x) + (mass2 * vector2.x) / mass1 + mass2;
-		let y = (mass1 * vector1.y) + (mass2 * vector2.y) / mass1 + mass2;
-		self.vector = Vector { x, y };
-	}
 
 	// TODO make this more precise, get max X and Y, use their centers
 	fn get_center (&self) -> Coord {
-			Coord(SHIP_SIZE / 2, SHIP_SIZE / 2)
+			Coord(0, 0)
 	}
 
 	fn rotate (mut self, direction: Dir) {
@@ -91,7 +73,7 @@ impl Mass {
 			Coord(x.ceil() as usize, y.ceil() as usize)
 		}
 
-		let mut new_body: Body = [ [ None; SHIP_SIZE ] ; SHIP_SIZE ];
+		let mut new_body: Body = Body::new();
 
 		for (x, a) in self.body.iter().enumerate() {
 			for (y, color) in a.iter().enumerate() {
@@ -111,7 +93,8 @@ impl Mass {
 fn inc_dimension (dimension: usize, delta: i16) -> Option<usize> {
 	match delta {
 		1 => {
-			if dimension == SHIP_SIZE { 
+			// this line is broken I don't remember what it does
+			if dimension == 1 { 
 				Some(dimension + 1) 
 			} else { None }
 		},
@@ -236,6 +219,17 @@ fn trace_2d_perimeter (	body: &Body,
 }
 
 impl Mass {
+	fn new () -> Mass {
+		Mass {
+			body: vec![],
+			anchor: Point{ x: 0, y: 0 },
+			perimeter: vec![],
+			perimeter_reference_point: Coord(0, 0),
+			orientation: Dir::N,
+			center: Coord(0, 0),
+		}
+	}
+
 	fn calculate_perimeter(mut self) {
 		self.perimeter = {
 			trace_2d_perimeter(&self.body, &self.perimeter_reference_point, Vec::new(), None)
